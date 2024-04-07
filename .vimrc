@@ -53,6 +53,7 @@ endif
 
 " personal config
 
+" number stuff
 set number relativenumber
 
 " change where vim saves viminfo
@@ -63,3 +64,9 @@ set autoindent expandtab tabstop=4 shiftwidth=4
 
 " so the splits don't take the main space
 set splitbelow splitright
+
+" change dirs for undo and backup
+set backupdir=~/.vim/bak/
+
+" disable undo files (don't like it)
+set noundofile
