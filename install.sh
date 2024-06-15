@@ -29,7 +29,7 @@ mkdir -p ~/.local/bin
 curl -s https://ohmyposh.dev/install.sh | bash -s -- -d ~/.local/bin
 
 # install nice stuff
-sudo pacman -S -q --noconfirm tmux nvim keychain bat tree 
+sudo pacman -S -q --noconfirm tmux neovim keychain bat tree 
 
 # stow tmux stuff
 stow -t ~/.config/tmux/ tmux
