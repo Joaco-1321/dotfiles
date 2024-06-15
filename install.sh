@@ -37,6 +37,9 @@ mkdir -p ~/.config/tmux/plugins/
 # stow tmux stuff
 stow -t ~/.config/tmux/ tmux
 
+# set up nvim config
+git clone https://github.com/Joaco-1321/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+
 # finally source rc
 . $ZDOTDIR/.zshrc
 
