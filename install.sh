@@ -22,7 +22,18 @@ git clone https://github.com/ohmyzsh/ohmyzsh.git $ZDOTDIR/oh-my-zsh
 # set aliases
 cp ./misc/aliases.zsh "$ZDOTDIR/oh-my-zsh/custom/"
 
-. $ZDOTDIR/.zshrc
+# local bin
+mkdir -p ~/.local/bin
 
-# git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+# install omp
+curl -s https://ohmyposh.dev/install.sh | bash -s -- -d ~/.local/bin
+
+# install nice stuff
+sudo pacman -S -q --noconfirm tmux nvim keychain bat tree 
+
+# stow tmux stuff
+stow -t ~/.config/tmux/ tmux
+
+# finally source rc
+. $ZDOTDIR/.zshrc
 
