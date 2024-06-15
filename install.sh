@@ -1,7 +1,7 @@
 #!/usr/bin/zsh
 
 # install essential
-sudo pacman -S --noconfirm stow unzip
+sudo pacman -S --noconfirm stow unzip base-devel
 
 # create XDG config
 mkdir -p ~/.config/{zsh,tmux,nvim,vim}
