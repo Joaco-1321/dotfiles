@@ -1,5 +1,5 @@
 # install essential
-sudo pacman -S --noconfirm stow unzip curl
+sudo pacman -S --noconfirm stow unzip
 
 # create XDG config
 mkdir -p ~/.config/{zsh,tmux,nvim,vim}
@@ -8,15 +8,19 @@ mkdir -p ~/.config/{zsh,tmux,nvim,vim}
 sudo cp ./misc/zshenv /etc/zsh/
 
 # stow zsh stuff
-sudo stow -t ~/.config/zsh/ ./zsh/
+stow -t ~/.config/zsh/ zsh
 
-# source necessary
+# source environment variables
 . /etc/zsh/zshenv
 . ~/.config/zsh/.zshenv
 
 # install omz
-ZSH="$ZDOTDIR/oh-my-zsh" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unatended
+git clone https://github.com/ohmyzsh/ohmyzsh.git $ZDOTDIR/oh-my-zsh
 
+# set aliases
+cp ./misc/aliases.zsh "$ZDOTDIR/oh-my-zsh/custom/"
+
+. $ZDOTDIR/.zshrc
 
 # git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
