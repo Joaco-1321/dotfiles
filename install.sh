@@ -1,3 +1,5 @@
+#!/usr/bin/zsh
+
 # install essential
 sudo pacman -S --noconfirm stow unzip
 
