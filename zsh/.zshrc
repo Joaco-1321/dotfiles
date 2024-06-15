@@ -43,7 +43,9 @@ HISTFILE=$ZDOTDIR/.zsh_history
 eval "$(oh-my-posh init zsh --config ~/.config/zsh/koki-theme.toml)"
 
 # ssh-agent stuff
-eval "$(keychain --agents ssh --eval --quick --quiet joaco_key)"
+if [[ -d ~/.ssh && $(ls -A) ]]; then
+  eval "$(keychain --agents ssh --eval --quick --quiet joaco_key)"
+fi
 
 # start a tmux session if not already in one
 if [ -z "$TMUX" ]; then
