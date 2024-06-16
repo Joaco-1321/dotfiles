@@ -4,13 +4,16 @@
 sudo pacman -S --noconfirm stow unzip base-devel
 
 # create XDG config
-mkdir -p ~/.config/{zsh,tmux,nvim,vim}
+mkdir -p ~/.config/{zsh,tmux,nvim,vim,git}
 
 # set ZDOTDIR variable
 sudo cp ./misc/zshenv /etc/zsh/
 
 # stow zsh stuff
-stow -t ~/.config/zsh/ zsh
+stow -t ~/.config/zsh zsh
+
+# stow git
+stow -t ~/.config/git git
 
 # source environment variables
 . /etc/zsh/zshenv
@@ -35,7 +38,7 @@ sudo pacman -S -q --noconfirm openssh tmux neovim keychain bat tree
 mkdir -p ~/.config/tmux/plugins/
 
 # stow tmux stuff
-stow -t ~/.config/tmux/ tmux
+stow -t ~/.config/tmux tmux
 
 # set up nvim config
 git clone https://github.com/Joaco-1321/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
