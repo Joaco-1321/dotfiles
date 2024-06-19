@@ -1,0 +1,6 @@
+[core]
+    sshCommand = ssh -i ~/.ssh/koki_key
+
+[user]
+    name = koki-kyle
+    email = 126334326+koki-kyle@users.noreply.github.com
