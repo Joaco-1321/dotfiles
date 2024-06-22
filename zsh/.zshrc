@@ -44,7 +44,7 @@ eval "$(oh-my-posh init zsh --config ~/.config/zsh/koki-theme.toml)"
 
 # ssh-agent stuff
 if [[ -d ~/.ssh && $(ls -A) ]]; then
-  eval "$(keychain --agents ssh --eval --quick --quiet joaco_key)"
+  eval "$(keychain --inherit any --agents ssh --eval --quiet joaco_key koki_key)"
 fi
 
 # start a tmux session if not already in one
