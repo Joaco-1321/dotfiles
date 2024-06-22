@@ -1,7 +1,7 @@
 #!/usr/bin/zsh
 
 # install essential
-sudo pacman -S --noconfirm stow unzip base-devel
+sudo pacman -S --noconfirm openssh stow unzip man-db base-devel
 
 # create XDG config
 mkdir -p ~/.config/{zsh,tmux,nvim,vim,git}
@@ -32,7 +32,7 @@ mkdir -p ~/.local/bin
 curl -s https://ohmyposh.dev/install.sh | bash -s -- -d ~/.local/bin
 
 # install nice stuff
-sudo pacman -S -q --noconfirm openssh tmux neovim keychain bat tree 
+sudo pacman -S -q --noconfirm tmux neovim keychain bat tree
 
 # create tmux plugins dir
 mkdir -p ~/.config/tmux/plugins/
