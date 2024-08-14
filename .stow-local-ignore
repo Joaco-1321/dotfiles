@@ -1,5 +1,5 @@
-dotfiles.sh
 .git
-install.sh
+install_packages.sh
 misc
+setup_dotfiles.sh
 ubuntu
