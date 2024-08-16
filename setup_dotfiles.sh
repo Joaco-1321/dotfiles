@@ -28,8 +28,8 @@ mkdir -p "$CONFIG_DIR/tmux/plugins"
 
 # use stow to manage the config directory
 echo "stowing config..."
-stow -d "$DOTFILES_DIR" -t "$HOME" pkgs/home
-stow -d "$DOTFILES_DIR" -t "$ZDOTDIR"/oh-my-zsh/custom pkgs/zsh-custom
+stow -d "$DOTFILES_DIR/pkgs" -t "$HOME" home
+stow -d "$DOTFILES_DIR/pkgs" -t "$CONFIG_DIR/zsh/oh-my-zsh/custom" zsh-custom
 
 # clone the kickstart.nvim repository for neovim configuration
 echo "cloning kickstart.nvim..."
