@@ -10,7 +10,7 @@ command_exists() {
 
 # update and install essential packages
 sudo pacman -Syu --noconfirm
-sudo pacman -S --noconfirm zsh openssh stow unzip man-db base-devel tmux neovim keychain bat tree
+sudo pacman -S --noconfirm zsh docker docker-compose openssh stow unzip man-db base-devel tmux neovim keychain bat tree
 
 # create the zshenv file in /etc/zsh/ using a heredoc
 sudo tee /etc/zsh/zshenv > /dev/null << 'EOF'
@@ -51,6 +51,16 @@ fi
 if [ ! -f ~/.local/bin/oh-my-posh ]; then
     curl -s https://ohmyposh.dev/install.sh | bash -s -- -d ~/.local/bin
 fi
+
+# create docker group if not exist
+if ! getent group docker > /dev/null 2>&1; then
+    echo "docker group does not exist. creating the group..."
+    sudo groupadd docker
+fi
+
+# add user to docker group
+sudo usermod -aG docker "$USER"
+echo "$USER has been added to the docker group"
 
 echo "packages installed."
 

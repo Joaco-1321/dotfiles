@@ -17,7 +17,7 @@ fi
 
 # create necessary directories inside .config based on dotfiles repo structure
 echo "creating necessary directories inside .config..."
-for dir in "$DOTFILES_DIR"/.config/*; do
+for dir in "$DOTFILES_DIR"/pkgs/home/.config/*; do
     if [ -d "$dir" ]; then
         mkdir -p "$CONFIG_DIR/$(basename "$dir")"
     fi
@@ -28,7 +28,8 @@ mkdir -p "$CONFIG_DIR/tmux/plugins"
 
 # use stow to manage the config directory
 echo "stowing config..."
-stow -d "$DOTFILES_DIR" -t "$HOME" .
+stow -d "$DOTFILES_DIR" -t "$HOME" pkgs/home
+stow -d "$DOTFILES_DIR" -t "$ZDOTDIR"/oh-my-zsh/custom pkgs/zsh-custom
 
 # clone the kickstart.nvim repository for neovim configuration
 echo "cloning kickstart.nvim..."
