@@ -47,6 +47,12 @@ if [ ! -d ~/.local/bin ]; then
     mkdir -p ~/.local/bin
 fi
 
+# ensure ~/.cache exists
+if [ ! -d ~/.cache ]; then
+    echo "creating ~/.cache directory..."
+    mkdir -p ~/.cache
+fi
+
 # install oh-my-posh
 if [ ! -f ~/.local/bin/oh-my-posh ]; then
     curl -s https://ohmyposh.dev/install.sh | bash -s -- -d ~/.local/bin
@@ -63,7 +69,7 @@ sudo usermod -aG docker "$USER"
 echo "$USER has been added to the docker group"
 
 # enable docker service
-sudo systemctl docker.socket enable --now
+sudo systemctl enable --now docker.socket
 
 echo "packages installed."
 
