@@ -62,5 +62,8 @@ fi
 sudo usermod -aG docker "$USER"
 echo "$USER has been added to the docker group"
 
+# enable docker service
+sudo systemctl docker.socket enable --now
+
 echo "packages installed."
 
