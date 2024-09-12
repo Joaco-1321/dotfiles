@@ -9,8 +9,8 @@ command_exists() {
 }
 
 # update and install essential packages
-sudo pacman -Syu --noconfirm
-sudo pacman -S --noconfirm zsh docker docker-compose openssh stow unzip man-db base-devel tmux neovim keychain bat tree
+sudo pacman -Syu -q --noconfirm
+sudo pacman -S -q --noconfirm zsh docker docker-compose openssh stow unzip fd ripgrep man-db base-devel tmux neovim keychain bat tree
 
 # create the zshenv file in /etc/zsh/ using a heredoc
 sudo tee /etc/zsh/zshenv > /dev/null << 'EOF'
