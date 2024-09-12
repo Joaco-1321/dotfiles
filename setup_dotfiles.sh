@@ -33,6 +33,6 @@ stow -d "$DOTFILES_DIR/pkgs" -t "$CONFIG_DIR/zsh/oh-my-zsh/custom" zsh-custom
 
 # clone the kickstart.nvim repository for neovim configuration
 echo "cloning kickstart.nvim..."
-git clone https://github.com/nvim-lua/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+git clone https://github.com/joaco-1321/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
 
 echo "dotfiles have been set up."
