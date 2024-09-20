@@ -1,4 +1,0 @@
-if [ "$TERM" != "screen-256color" ]; then
-    tmux a -t "$USER" || tmux new -s "$USER" -n main
-fi
-
