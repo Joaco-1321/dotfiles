@@ -47,11 +47,10 @@ eval "$(oh-my-posh init zsh --config ~/.config/zsh/koki-theme.toml)"
 
 # start a tmux session if not already in one
 if [ -z "$TMUX" ]; then
-  tmux-sessionizer
-  # if tmux has -t arch 2>/dev/null; then
-  #     tmux a -t arch
-  # else
-  #     tmux new -s arch -n shell
-  # fi
+  if tmux has 2>/dev/null; then
+      tmux a
+  else
+      tmux-sessionizer
+  fi
 fi
 
