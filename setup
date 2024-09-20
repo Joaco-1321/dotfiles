@@ -142,9 +142,11 @@ stow_dotfiles() {
 
     (
         while IFS='=' read -r package target; do
-            if [ -n "$package" ] && [ -n "$target" ]; then
-                ensure_directory_exists "$target"
-                stow_package "$package" "$target" "$DOTFILES_DIR/custom"
+            if [ "$package" ] && [ "$target" ]; then
+                target_expanded="$(eval echo "$target")"
+
+                ensure_directory_exists "$target_expanded"
+                stow_package "$package" "$(eval echo "$target_expanded")" "$DOTFILES_DIR/custom"
             fi
         done < "$TARGETS_FILE"
     )
