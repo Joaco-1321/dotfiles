@@ -1,16 +1,20 @@
 #!/bin/sh
 
 # define paths
-DOTFILES_DIR=$(dirname "$(realpath "$0")")
+DOTFILES_DIR=$(realpath "$0" | xargs dirname)
 
-# function to check if a command exists
-command_exists() {
-    command -v "$1" &> /dev/null
+ensure_directory_exists() {
+    local dir_path=$1
+
+    if [ ! -d "dir_path" ]; then
+        echo "creating $dir_path directory..."
+        mkdir -p "$dir_path"
+    fi
 }
 
 # update and install essential packages
 sudo pacman -Syu -q --noconfirm
-sudo pacman -S -q --noconfirm zsh docker docker-compose openssh stow unzip fd ripgrep man-db base-devel tmux neovim keychain bat tree
+sudo pacman -S -q --noconfirm zsh docker docker-compose openssh stow unzip fd ripgrep man-db base-devel tmux neovim keychain bat tree fzf
 
 # create the zshenv file in /etc/zsh/ using a heredoc
 sudo tee /etc/zsh/zshenv > /dev/null << 'EOF'
@@ -30,27 +34,14 @@ if [ "$SHELL" != "/bin/zsh" ]; then
     echo "default shell changed to zsh. please log out and log back in for the change to take effect."
 fi
 
-# ensure ZDOTDIR exists
-if [ ! -d "$ZDOTDIR" ]; then
-    echo "creating $ZDOTDIR..."
-    mkdir -p "$ZDOTDIR"
-fi
+# ensure respective directories exist
+ensure_directory_exists "$ZDOTDIR"
+ensure_directory_exists ~/.local/bin
+ensure_directory_exists ~/.cache
 
 # install oh-my-zsh
 if [ ! -d "$ZDOTDIR/oh-my-zsh" ]; then
     git clone https://github.com/ohmyzsh/ohmyzsh.git $ZDOTDIR/oh-my-zsh
-fi
-
-# ensure ~/.local/bin exists
-if [ ! -d ~/.local/bin ]; then
-    echo "creating ~/.local/bin directory..."
-    mkdir -p ~/.local/bin
-fi
-
-# ensure ~/.cache exists
-if [ ! -d ~/.cache ]; then
-    echo "creating ~/.cache directory..."
-    mkdir -p ~/.cache
 fi
 
 # install oh-my-posh

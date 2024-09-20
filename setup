@@ -1,0 +1,177 @@
+#!/bin/sh
+
+# define paths
+DOTFILES_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}"
+LOCAL_BIN_DIR="$HOME/.local/bin"
+TARGETS_FILE="$DOTFILES_DIR/custom-stow-targets"
+
+check_command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+exit_if_command_doesnt_exists() {
+    if ! check_command_exists "$1"; then
+        echo "error: '$1' is not installed. please install it and try again."
+        exit 1
+    fi
+}
+
+ensure_directory_exists() {
+    dir_path="$1"
+
+    if [ ! -d "$dir_path" ]; then
+        echo "creating $dir_path directory..."
+        mkdir -p "$dir_path"
+    fi
+
+    unset dir_path
+}
+
+detect_distro() {
+    if [ -f /etc/os-release ]; then
+        . /etc/os-release
+        echo "$ID"
+    else
+        echo "unknown"
+    fi
+}
+
+stow_package() {
+    (
+        package=$1
+        target=$2
+        stow_dir=${3:-$DOTFILES_DIR}
+
+        echo "stowing $package into $target..."
+        stow -d "$stow_dir" -t "$target" "$package"
+    )
+}
+
+setup_neovim_config() {
+    (
+        if ! check_command_exists nvim; then
+            echo "neovim is not installed. skipping neovim configuration setup."
+            return
+        fi
+
+        nvim_config_dir="$CONFIG_DIR/nvim"
+        default_repo="https://github.com/nvim-lua/kickstart.nvim.git"
+
+        if [ -d "$nvim_config_dir" ]; then
+            echo "neovim config directory already exists."
+
+            while true; do
+                echo "do you want to overwrite the existing config with your repo? [y/n]: "
+                read -r answer
+
+                case $answer in
+                    [yY]* )
+                        echo "overwriting neovim config..."
+                        break
+                        ;;
+                    [Nn]* | "" )
+                        echo "skipping neovim config setup."
+                        return
+                        ;;
+                    * )
+                        echo "please answer yes or no."
+                        ;;
+                esac
+            done
+        fi
+
+        # ask for a repo url or use default
+        echo "enter the repo url for your neovim config (default: $default_repo): "
+        read -r repo_url
+        repo_url=${repo_url:-$default_repo}
+
+        # check if the url is valid (simple regex for a valid url format)
+        if ! echo "$repo_url" | grep -qE '^https?://.+\.git$'; then
+            echo "error: invalid repository url format."
+            return
+        fi
+
+        # check if the repository exists
+        if ! git ls-remote "$repo_url" >/dev/null 2>&1; then
+            echo "error: repository not found or inaccessible: $repo_url"
+            return
+        fi
+
+        rm -rf "$nvim_config_dir"
+
+        echo "cloning repo into $nvim_config_dir..."
+        git clone  "$repo_url" "$nvim_config_dir"
+    )
+}
+
+install_packages() {
+    (
+        distro=$(detect_distro)
+        echo "detected distro: $distro"
+
+        case "$distro" in
+            arch)
+                . ./install/arch_install.sh
+                ;;
+            *)
+                echo "unsupported distro: $distro"
+                exit 1
+                ;;
+        esac
+    )
+}
+
+stow_dotfiles() {
+    echo "stowing dotfiles..."
+
+    # check if stow and git are installed
+    check_command_exists stow
+    check_command_exists git
+
+    # create necessary directories inside .config based on dotfiles repo structure
+    (
+        for dir in "$DOTFILES_DIR/home/"*; do
+            if [ -d "$dir" ]; then
+                ensure_directory_exists "$CONFIG_DIR/$(basename "$dir")"
+            fi
+        done
+    )
+
+    stow_package home $CONFIG_DIR
+
+    (
+        while IFS='=' read -r package target; do
+            if [ -n "$package" ] && [ -n "$target" ]; then
+                ensure_directory_exists "$target"
+                stow_package "$package" "$target" "$DOTFILES_DIR/custom"
+            fi
+        done < "$TARGETS_FILE"
+    )
+
+    setup_neovim_config
+
+    echo "dotfiles have been set up."
+}
+
+main() {
+    case "$1" in
+        install)
+            install_packages
+            ;;
+        stow)
+            stow_dotfiles
+            ;;
+        all)
+            install_packages
+            stow_dotfiles
+            ;;
+        *)
+            echo "usage: $0 {install|stow|all}"
+            exit 1
+            ;;
+    esac
+}
+
+main "$1"
+
