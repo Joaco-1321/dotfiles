@@ -126,8 +126,8 @@ stow_dotfiles() {
     echo "stowing dotfiles..."
 
     # check if stow and git are installed
-    check_command_exists stow
-    check_command_exists git
+    exit_if_command_doesnt_exists stow
+    exit_if_command_doesnt_exists git
 
     # create necessary directories inside .config based on dotfiles repo structure
     (
