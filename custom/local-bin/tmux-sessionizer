@@ -15,19 +15,16 @@ tmux_running=$(pgrep tmux)
 
 if [[ -z $tmux_running ]]; then
     tmux new-session -s $selected_name -c $selected
-else
-    if [[ -z $TMUX ]]; then
-        if tmux has-session -t=$selected_name 2>/dev/null; then
-            tmux attach -t=$selected_name
-        else
-            tmux new-session -s $selected_name -c $selected
-        fi
-    else
-        if ! tmux has-session -t=$selected_name 2>/dev/null; then
-            tmux new-session -ds $selected_name -c $selected
-        fi
+    exit 0
+fi
 
-        tmux switch-client -t $selected_name
-    fi
+if ! tmux has-session -t=$selected_name 2>/dev/null; then
+    tmux new-session -ds $selected_name -c $selected
+fi
+
+if [[ -z $TMUX ]]; then
+    tmux attach -t=$selected_name
+else
+    tmux switch-client -t $selected_name
 fi
 
