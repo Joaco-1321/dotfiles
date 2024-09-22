@@ -45,6 +45,8 @@ eval "$(oh-my-posh init zsh --config ~/.config/zsh/koki-theme.toml)"
 # ssh-agent stuff
 # eval `keychain --eval -q joaco_key koki_key`
 
+export TMUX_TMPDIR=$HOME/.local/socket/tmux
+
 # start a tmux session if not already in one
 if [ -z "$TMUX" ]; then
   if tmux has 2>/dev/null; then
