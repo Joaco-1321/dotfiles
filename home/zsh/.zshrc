@@ -47,6 +47,8 @@ eval "$(oh-my-posh init zsh --config ~/.config/zsh/koki-theme.toml)"
 
 export TMUX_TMPDIR=$HOME/.local/socket/tmux
 
+source <(fzf --zsh)
+
 # start a tmux session if not already in one
 if [ -z "$TMUX" ]; then
   if tmux has 2>/dev/null; then
