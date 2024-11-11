@@ -1,7 +1,14 @@
-#:schema https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
-
-version = 2
+version = 3
 final_space = true
+
+[secondary_prompt]
+  template = '❯ '
+  foreground = 'darkGray'
+  background = 'transparent'
+
+[transient_prompt]
+  template = 'λ '
+  foreground_templates = ['{{ if gt .Code 0 }}red{{ end }}', '{{ if eq .Code 0 }}yellow{{ end }}']
 
 [[blocks]]
   type = 'prompt'
@@ -9,24 +16,26 @@ final_space = true
   newline = true
 
   [[blocks.segments]]
+    template = '{{ .Path }}'
+    foreground = 'lightGreen'
+    background = 'transparent'
     type = 'path'
     style = 'plain'
-    background = 'transparent'
-    foreground = 'lightGreen'
-    template = '{{ .Path }}'
 
     [blocks.segments.properties]
+      cache_duration = 'none'
       style = 'full'
 
   [[blocks.segments]]
-    type = 'git'
-    style = 'plain'
+    template = ' {{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed)  }}*{{ end }} <yellow>{{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end }}</>'
     foreground = 'darkGray'
     background = 'transparent'
-    template = ' {{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed)  }}*{{ end }} <yellow>{{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end }}</>'
+    type = 'git'
+    style = 'plain'
 
     [blocks.segments.properties]
       branch_icon = ''
+      cache_duration = 'none'
       commit_icon = '@'
       fetch_status = true
 
@@ -35,13 +44,14 @@ final_space = true
   overflow = 'hidden'
 
   [[blocks.segments]]
-    type = 'executiontime'
-    style = 'plain'
+    template = '{{ div .Ms 1000 }}s'
     foreground = 'lightGreen'
     background = 'transparent'
-    template = '{{ div .Ms 1000 }}s'
+    type = 'executiontime'
+    style = 'plain'
 
     [blocks.segments.properties]
+      cache_duration = 'none'
       threshold = 3000
 
 [[blocks]]
@@ -50,24 +60,10 @@ final_space = true
   newline = true
 
   [[blocks.segments]]
+    template = 'λ'
     type = 'path'
     style = 'plain'
-    backgroud = 'transparent'
-    foreground_templates = [
-      '{{ if gt .Code 0 }}red{{ end }}',
-      '{{ if eq .Code 0 }}yellow{{ end }}'
-    ]
-    template = 'λ'
+    foreground_templates = ['{{ if gt .Code 0 }}red{{ end }}', '{{ if eq .Code 0 }}yellow{{ end }}']
 
-[transient_prompt]
-  backgroud = 'transparent'
-  foreground_templates = [
-    '{{ if gt .Code 0 }}red{{ end }}',
-    '{{ if eq .Code 0 }}yellow{{ end }}'
-  ]
-  template = 'λ '
-
-[secondary_prompt]
-  foreground = 'darkGray'
-  background = 'transparent'
-  template = '❯ '
+    [blocks.segments.properties]
+      cache_duration = 'none'
