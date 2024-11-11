@@ -7,3 +7,7 @@
 
 [core]
     editor = nvim
+[pager]
+    diff = nvim -M '+ set nobuflisted | map q :qa!<CR>'
+    log = bat
+    branch = bat
