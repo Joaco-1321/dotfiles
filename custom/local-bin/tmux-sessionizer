@@ -14,9 +14,7 @@ else
                   | fzf --tmux)
 fi
 
-if [[ -z $selected ]]; then
-    exit 0
-fi
+[[ -z $selected ]] && exit 0
 
 selected=${selected/#\~/${HOME}}
 selected_name=$(basename "$selected" | tr . _)
