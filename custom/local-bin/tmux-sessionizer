@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+command -v fd >/dev/null 2>&1 || { echo 'fd is required but not installed' >&2; exit 1; }
+command -v fzf >/dev/null 2>&1 || { echo 'fd is required but not installed' >&2; exit 1; }
+
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
@@ -8,7 +11,7 @@ else
                   --base-directory "$HOME" \
                   --search-path 'repos' \
                   '^.git$' \
-              | fzf --tmux)
+                  | fzf --tmux)
 fi
 
 if [[ -z $selected ]]; then
