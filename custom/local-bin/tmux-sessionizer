@@ -17,7 +17,8 @@ fi
 [[ -z $selected ]] && exit 0
 
 selected=${selected/#\~/${HOME}}
-selected_name=$(basename "$selected" | tr . _)
+selected_name=${selected##*/}
+selected_name=${selected_name//./-}
 tmux_running=$(pgrep tmux)
 
 if [[ -z $tmux_running ]]; then
