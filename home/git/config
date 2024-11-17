@@ -1,13 +1,13 @@
 [init]
     defaultBranch = main
 
-[user]
-    name = Joaco-1321
-    email = 126332412+Joaco-1321@users.noreply.github.com
-
 [core]
     editor = nvim
+
 [pager]
     diff = nvim -M '+ set nobuflisted | map q :qa!<CR>'
     log = bat
     branch = bat
+
+[include]
+    path = ./config.local
