@@ -7,12 +7,14 @@ done
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    selected=$(fd -HLt d \
+    custom_paths=$(printf '%s\n' '~/repos' '~/scratch')
+    selected=$((printf '%s\n' "$custom_paths" ;\
+               fd -HLd 5 \
                   --format '~/{//}' \
                   --base-directory "$HOME" \
                   --search-path 'repos' \
-                  '^.git$' \
-                  | fzf --tmux)
+                  '^.git[/]?$') \
+               | fzf --tmux)
 fi
 
 [[ -z $selected ]] && exit 0
