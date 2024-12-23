@@ -20,15 +20,11 @@ fi
 selected=${selected/#\~/${HOME}}
 selected_name=${selected##*/}
 selected_name=${selected_name//./-}
-tmux_running=$(pgrep tmux)
-
-if [[ -z $tmux_running ]]; then
-    tmux new-session -s $selected_name -c $selected
-    exit 0
-fi
 
 if ! tmux has-session -t=$selected_name 2>/dev/null; then
-    tmux new-session -ds $selected_name -c $selected
+    tmux new-session -dn 'editor' -s $selected_name -c $selected
+    tmux send-keys -t 1 'clear; nvim || vim' c-M
+    tmux new-window -dn 'shell' -c $selected
 fi
 
 if [[ -z $TMUX ]]; then
