@@ -23,5 +23,7 @@ export MANPAGER="nvim +Man!"
 export FZF_DEFAULT_COMMAND="fd -Ht f -E '.git'"
 export FZF_DEFAULT_OPTS="--height ~60% --cycle --layout reverse"
 
+export VCPKG_ROOT="/home/joaco/third-party/vcpkg"
+
 # path
-export PATH="$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH"
+export PATH="$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH:$VCPKG_ROOT"

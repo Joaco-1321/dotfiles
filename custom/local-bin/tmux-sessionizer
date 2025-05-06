@@ -1,37 +1,47 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 for cmd in fd fzf; do
-    command -v "$cmd" >/dev/null || { echo "$cmd is required but not installed" >&2; exit 1; }
+    command -v "$cmd" >/dev/null 2>&1 || {
+        echo "'$cmd' is required but not installed" >&2
+        exit 1
+    }
 done
 
-if [[ $# -eq 1 ]]; then
-    selected=$1
-else
-    custom_paths=$(printf '%s\n' '~/repos' '~/scratch')
-    selected=$((printf '%s\n' "$custom_paths" ;\
-               fd -HLd 5 \
-                  --format '~/{//}' \
-                  --base-directory "$HOME" \
-                  --search-path 'repos' \
-                  '^.git[/]?$') \
-               | fzf --tmux)
+if [ "$#" -gt 1 ]; then
+    echo "creation of multiple sessions is not implemented yet" >&2
+    exit 1
 fi
 
-[[ -z $selected ]] && exit 0
+if [ "$#" -eq 1 ]; then
+    target="$1"
+else
+    target=$(
+        fd -HLd 5 -t d \
+            --format "~/{//}" \
+            --base-directory "$HOME" \
+            --search-path "repos" \
+            "^\.git/?$" \
+        | fzf --tmux | sed "s|^~|$HOME|")
+fi
 
-selected=${selected/#\~/${HOME}}
-selected_name=${selected##*/}
-selected_name=${selected_name//./-}
+[ -z "$target" ] && exit 0
 
-if ! tmux has-session -t=$selected_name 2>/dev/null; then
-    tmux new-session -dn 'editor' -s $selected_name -c $selected
-    tmux send-keys -t 1 'clear; nvim || vim' c-M
-    tmux new-window -dn 'shell' -c $selected
+normalized_path=$(cd -P "$target" 2>/dev/null && pwd)
+
+if [ -z "$normalized_path" ]; then
+    echo "invalid path: $target" >&2
+    exit 1
+fi
+
+base=$(basename "$normalized_path" | sed "s/\./-/g")
+
+if ! tmux has-session -t=$base 2>/dev/null; then
+    tmux new-session -dn 'shell' -s $base -c $normalized_path
 fi
 
 if [[ -z $TMUX ]]; then
-    tmux attach -t=$selected_name
+    tmux attach -t=$base
 else
-    tmux switch-client -t $selected_name
+    tmux switch-client -t $base
 fi
 

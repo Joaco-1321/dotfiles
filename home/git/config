@@ -5,9 +5,12 @@
     editor = nvim
 
 [pager]
-    diff = nvim -M '+ set nobuflisted | map q :qa!<CR>'
-    log = bat
-    branch = bat
+    diff = bat -n
+    log = bat -n
+    branch = bat -n
 
-[include]
-    path = ./config.local
+[user]
+	email = 126332412+Joaco-1321@users.noreply.github.com
+	name = Joaco-1321
+[rerere]
+	enabled = true
